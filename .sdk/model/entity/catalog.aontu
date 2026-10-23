@@ -1,0 +1,101 @@
+# Entity: catalog
+
+main: kit: entity: catalog: {
+
+  alias: field: {}
+
+  fields: {
+    agency: {
+      h: "Agency"
+      n: "agency"
+      r: true
+      t: "`$STRING`"
+    }
+    api_url: {
+      h: "Api Url"
+      n: "api_url"
+      r: true
+      t: "`$STRING`"
+    }
+    category: {
+      h: "Category"
+      n: "category"
+      r: true
+      t: "`$STRING`"
+    }
+    dimension: {
+      h: "Dimension"
+      n: "dimension"
+      r: true
+      sh: "`year` for federal programs, `state-year` for state-level ones."
+      t: "`$STRING`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      t: "`$STRING`"
+    }
+    page_url: {
+      h: "Page Url"
+      n: "page_url"
+      r: true
+      t: "`$STRING`"
+    }
+    program: {
+      h: "Program"
+      n: "program"
+      r: true
+      sh: "Program slug, the `{program}` path parameter."
+      t: "`$STRING`"
+    }
+    states: {
+      h: "States"
+      n: "states"
+      r: true
+      sh: "State slugs published (empty for year programs)."
+      t: "`$ARRAY`"
+    }
+    years: {
+      h: "Years"
+      n: "years"
+      r: true
+      sh: "Years published (empty for state-year programs)."
+      t: "`$ARRAY`"
+    }
+  }
+
+  name: "catalog"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /index.json"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/index.json"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "index.json"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

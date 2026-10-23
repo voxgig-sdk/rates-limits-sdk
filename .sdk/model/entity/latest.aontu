@@ -1,0 +1,149 @@
+# Entity: latest
+
+main: kit: entity: latest: {
+
+  alias: field: {}
+
+  fields: {
+    agency: {
+      h: "Agency"
+      n: "agency"
+      r: true
+      t: "`$STRING`"
+    }
+    canonical_url: {
+      h: "Canonical Url"
+      n: "canonical_url"
+      r: true
+      t: "`$STRING`"
+    }
+    category: {
+      h: "Category"
+      n: "category"
+      r: true
+      t: "`$STRING`"
+    }
+    date_basis: {
+      h: "Date Basis"
+      n: "date_basis"
+      r: true
+      sh: "Observed: `effective`, `as-of`."
+      t: "`$STRING`"
+    }
+    effective_date: {
+      fo: "date"
+      h: "Effective Date"
+      n: "effective_date"
+      r: true
+      t: "`$STRING`"
+    }
+    estimate: {
+      h: "Estimate"
+      n: "estimate"
+      r: false
+      sh: "Estimate block (formula and inputs) for derived figures."
+      t: "`$OBJECT`"
+    }
+    explainers: {
+      h: "Explainers"
+      n: "explainers"
+      r: false
+      sh: "Explanatory notes, or null."
+      t: "`$ARRAY`"
+    }
+    figures: {
+      h: "Figures"
+      n: "figures"
+      r: true
+      t: "`$ARRAY`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      t: "`$STRING`"
+    }
+    program: {
+      h: "Program"
+      n: "program"
+      r: true
+      sh: "Program slug, e.g."
+      t: "`$STRING`"
+    }
+    published_at: {
+      fo: "date-time"
+      h: "Published At"
+      n: "published_at"
+      r: true
+      t: "`$STRING`"
+    }
+    schedule: {
+      h: "Schedule"
+      n: "schedule"
+      r: false
+      sh: "Mid-year changes, or null."
+      t: "`$ARRAY`"
+    }
+    state: {
+      h: "State"
+      n: "state"
+      r: true
+      sh: "State slug for state-level programs (e.g."
+      t: "`$STRING`"
+    }
+    status: {
+      h: "Status"
+      n: "status"
+      r: true
+      sh: "Observed: `official`."
+      t: "`$STRING`"
+    }
+    verified_at: {
+      fo: "date"
+      h: "Verified At"
+      n: "verified_at"
+      r: true
+      t: "`$STRING`"
+    }
+    year: {
+      h: "Year"
+      n: "year"
+      r: true
+      t: "`$INTEGER`"
+    }
+  }
+
+  name: "latest"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /latest.json"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/latest.json"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "latest.json"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

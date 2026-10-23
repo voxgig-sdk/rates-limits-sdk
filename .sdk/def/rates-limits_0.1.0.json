@@ -1,0 +1,666 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Rates and Limits API",
+    "description": "Static JSON API of US federal and state limits, tax brackets and wage rates from ratesandlimits.com; every figure carries the quoted source sentence, its offset in a stored snapshot, the snapshot's SHA-256 and the date it was verified. Knowledge comes from the documentation at https://ratesandlimits.com/api (which lists the five routes) and from live GET probes of every route on 2026-10-23 (55 programs; e.g. `hsa-contribution-limit`, and the state-level `minimum-wage`). Unverified: the shape of a record's `estimate` block (null in every probed record) and of `derived` figures (none observed). State-level programs (`minimum-wage`, `tipped-minimum-wage`) are only reachable through the state route. Responses can be large (`latest.json` ~2.3 MB, `minimum-wage.json` ~3 MB). No key and no rate limit.",
+    "version": "1.0.0",
+    "contact": {
+      "url": "https://ratesandlimits.com/api"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://ratesandlimits.com/api/v1",
+      "description": "Rates and Limits production server"
+    }
+  ],
+  "paths": {
+    "/index.json": {
+      "get": {
+        "summary": "Get the catalog",
+        "description": "Returns every program with its years, states and URLs.",
+        "operationId": "getCatalog",
+        "responses": {
+          "200": {
+            "description": "The catalog",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Catalog"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/latest.json": {
+      "get": {
+        "summary": "List every figure currently in force",
+        "description": "Returns the current record of every program (and state) in one response.",
+        "operationId": "listLatestRecords",
+        "responses": {
+          "200": {
+            "description": "Current records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "license": {
+                      "$ref": "#/components/schemas/License"
+                    },
+                    "verified_through": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "documentation": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "Number of records."
+                    },
+                    "records": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Record"
+                      }
+                    }
+                  },
+                  "required": [
+                    "license",
+                    "verified_through",
+                    "documentation",
+                    "count",
+                    "records"
+                  ],
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{program}.json": {
+      "get": {
+        "summary": "Get every year of one program",
+        "description": "Returns the program with every published record.",
+        "operationId": "getProgram",
+        "parameters": [
+          {
+            "name": "program",
+            "in": "path",
+            "required": true,
+            "description": "Program slug from the catalog.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "hsa-contribution-limit"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The program",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Program"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{program}/{year}.json": {
+      "get": {
+        "summary": "Get one record of a federal program",
+        "description": "Returns one program's record for one year. Use the state route for state-level programs.",
+        "operationId": "getRecord",
+        "parameters": [
+          {
+            "name": "program",
+            "in": "path",
+            "required": true,
+            "description": "Program slug from the catalog.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "hsa-contribution-limit"
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "description": "Year of the record.",
+            "schema": {
+              "type": "integer"
+            },
+            "example": 2026
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The record",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Record"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{program}/{state}/{year}.json": {
+      "get": {
+        "summary": "Get one record of a state-level program",
+        "description": "Returns a state-level program's record for one state and year.",
+        "operationId": "getStateRecord",
+        "parameters": [
+          {
+            "name": "program",
+            "in": "path",
+            "required": true,
+            "description": "State-level program slug (`minimum-wage` or `tipped-minimum-wage`).",
+            "schema": {
+              "type": "string"
+            },
+            "example": "minimum-wage"
+          },
+          {
+            "name": "state",
+            "in": "path",
+            "required": true,
+            "description": "State slug from the catalog's `states`.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "florida"
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "description": "Year of the record.",
+            "schema": {
+              "type": "integer"
+            },
+            "example": 2026
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The record",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Record"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Catalog": {
+        "type": "object",
+        "description": "The catalog of every program, its years and states.",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "license": {
+            "$ref": "#/components/schemas/License"
+          },
+          "verified_through": {
+            "type": "string",
+            "format": "date"
+          },
+          "documentation": {
+            "type": "string"
+          },
+          "endpoints": {
+            "type": "object",
+            "description": "URL templates of the API routes.",
+            "properties": {
+              "catalog": {
+                "type": "string"
+              },
+              "latest": {
+                "type": "string"
+              },
+              "program": {
+                "type": "string"
+              },
+              "record": {
+                "type": "string"
+              },
+              "state_record": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          },
+          "programs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CatalogProgram"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "license",
+          "verified_through",
+          "documentation",
+          "endpoints",
+          "programs"
+        ],
+        "additionalProperties": true
+      },
+      "CatalogProgram": {
+        "type": "object",
+        "description": "A catalog entry describing one program.",
+        "properties": {
+          "program": {
+            "type": "string",
+            "description": "Program slug, the `{program}` path parameter."
+          },
+          "name": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "agency": {
+            "type": "string"
+          },
+          "dimension": {
+            "type": "string",
+            "description": "`year` for federal programs, `state-year` for state-level ones."
+          },
+          "years": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "Years published (empty for state-year programs)."
+          },
+          "states": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "State slugs published (empty for year programs)."
+          },
+          "page_url": {
+            "type": "string"
+          },
+          "api_url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "program",
+          "name",
+          "category",
+          "agency",
+          "dimension",
+          "years",
+          "states",
+          "page_url",
+          "api_url"
+        ],
+        "additionalProperties": true
+      },
+      "License": {
+        "type": "object",
+        "description": "Licence terms for the data.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "e.g. `Attribution required`."
+          },
+          "url": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "url",
+          "summary"
+        ],
+        "additionalProperties": true
+      },
+      "Program": {
+        "type": "object",
+        "description": "One program with every published record.",
+        "properties": {
+          "program": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "agency": {
+            "type": "string"
+          },
+          "dimension": {
+            "type": "string",
+            "description": "`year` or `state-year`."
+          },
+          "page_url": {
+            "type": "string"
+          },
+          "verified_through": {
+            "type": "string",
+            "format": "date"
+          },
+          "documentation": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer",
+            "description": "Number of records."
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Record"
+            },
+            "description": "Every year (and state) of the program."
+          }
+        },
+        "required": [
+          "program",
+          "name",
+          "category",
+          "agency",
+          "dimension",
+          "page_url",
+          "verified_through",
+          "documentation",
+          "count",
+          "records"
+        ],
+        "additionalProperties": true
+      },
+      "Record": {
+        "type": "object",
+        "description": "The figures of one program for one year (and, for state-level programs, one state).",
+        "properties": {
+          "program": {
+            "type": "string",
+            "description": "Program slug, e.g. `hsa-contribution-limit`."
+          },
+          "name": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "agency": {
+            "type": "string"
+          },
+          "year": {
+            "type": "integer"
+          },
+          "state": {
+            "type": "string",
+            "description": "State slug for state-level programs (e.g. `florida`), else null.",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "description": "Observed: `official`."
+          },
+          "effective_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "date_basis": {
+            "type": "string",
+            "description": "Observed: `effective`, `as-of`."
+          },
+          "verified_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "published_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "canonical_url": {
+            "type": "string"
+          },
+          "figures": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Figure"
+            }
+          },
+          "schedule": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScheduleEntry"
+            },
+            "description": "Mid-year changes, or null.",
+            "nullable": true
+          },
+          "explainers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Explainer"
+            },
+            "description": "Explanatory notes, or null.",
+            "nullable": true
+          },
+          "estimate": {
+            "type": "object",
+            "description": "Estimate block (formula and inputs) for derived figures. Always null in every response probed on 2026-10-23, so its shape is unverified.",
+            "nullable": true,
+            "properties": {},
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "program",
+          "name",
+          "category",
+          "agency",
+          "year",
+          "state",
+          "status",
+          "effective_date",
+          "date_basis",
+          "verified_at",
+          "published_at",
+          "canonical_url",
+          "figures"
+        ],
+        "additionalProperties": true
+      },
+      "Figure": {
+        "type": "object",
+        "description": "One published number, with its evidence.",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "Figure key within the record, e.g. `self-only`, `hourly`."
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable label."
+          },
+          "value": {
+            "type": "number",
+            "description": "Numeric value (integer or decimal)."
+          },
+          "format": {
+            "type": "string",
+            "description": "Value format. Observed: `usd`, `percent`, `usd-delta`, `cents`."
+          },
+          "formatted": {
+            "type": "string",
+            "description": "Display string, e.g. `$4,400`, `76¢`."
+          },
+          "scope": {
+            "type": "string",
+            "description": "Qualifier such as a filing status, or null.",
+            "nullable": true
+          },
+          "derived": {
+            "type": "boolean",
+            "description": "True for a computed figure; such figures carry no quote (per the docs; none observed)."
+          },
+          "quote": {
+            "type": "string",
+            "description": "The sentence the figure was read from."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Character offset of `quote` within the source snapshot."
+          },
+          "source": {
+            "$ref": "#/components/schemas/Source"
+          }
+        },
+        "required": [
+          "key",
+          "label",
+          "value",
+          "format",
+          "formatted",
+          "scope",
+          "derived",
+          "source"
+        ],
+        "additionalProperties": true
+      },
+      "Source": {
+        "type": "object",
+        "description": "The document a figure or explainer was read from.",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Government source document."
+          },
+          "title": {
+            "type": "string",
+            "description": "Source document title, e.g. `Rev. Proc. 2025-19`."
+          },
+          "publisher": {
+            "type": "string",
+            "description": "e.g. `IRS`, `DOL`, `SSA`."
+          },
+          "fetched_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the snapshot was taken."
+          },
+          "sha256_text": {
+            "type": "string",
+            "description": "SHA-256 of the stored text snapshot."
+          },
+          "snapshot_url": {
+            "type": "string",
+            "description": "Permanent URL of the stored text snapshot."
+          }
+        },
+        "required": [
+          "url",
+          "title",
+          "publisher",
+          "fetched_at",
+          "sha256_text",
+          "snapshot_url"
+        ],
+        "additionalProperties": true
+      },
+      "Explainer": {
+        "type": "object",
+        "description": "A short explanatory note attached to a record, with its evidence.",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "heading": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "quote": {
+            "type": "string",
+            "description": "Supporting sentence from the source."
+          },
+          "offset": {
+            "type": "integer",
+            "description": "Character offset of `quote` in the source snapshot."
+          },
+          "verified_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "source": {
+            "$ref": "#/components/schemas/Source"
+          }
+        },
+        "required": [
+          "key",
+          "heading",
+          "body",
+          "quote",
+          "offset",
+          "verified_at",
+          "source"
+        ],
+        "additionalProperties": true
+      },
+      "ScheduleEntry": {
+        "type": "object",
+        "description": "Figures that take effect part-way through the record's year.",
+        "properties": {
+          "from": {
+            "type": "string",
+            "format": "date",
+            "description": "Date the scheduled figures take effect."
+          },
+          "verified_at": {
+            "type": "string",
+            "format": "date"
+          },
+          "figures": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Figure"
+            }
+          }
+        },
+        "required": [
+          "from",
+          "verified_at",
+          "figures"
+        ],
+        "additionalProperties": true
+      }
+    }
+  }
+}

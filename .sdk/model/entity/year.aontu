@@ -1,0 +1,241 @@
+# Entity: year
+
+main: kit: entity: year: {
+
+  alias: field: {}
+
+  fields: {
+    agency: {
+      h: "Agency"
+      n: "agency"
+      r: true
+      t: "`$STRING`"
+    }
+    canonical_url: {
+      h: "Canonical Url"
+      n: "canonical_url"
+      r: true
+      t: "`$STRING`"
+    }
+    category: {
+      h: "Category"
+      n: "category"
+      r: true
+      t: "`$STRING`"
+    }
+    date_basis: {
+      h: "Date Basis"
+      n: "date_basis"
+      r: true
+      sh: "Observed: `effective`, `as-of`."
+      t: "`$STRING`"
+    }
+    effective_date: {
+      fo: "date"
+      h: "Effective Date"
+      n: "effective_date"
+      r: true
+      t: "`$STRING`"
+    }
+    estimate: {
+      h: "Estimate"
+      n: "estimate"
+      r: false
+      sh: "Estimate block (formula and inputs) for derived figures."
+      t: "`$OBJECT`"
+    }
+    explainers: {
+      h: "Explainers"
+      n: "explainers"
+      r: false
+      sh: "Explanatory notes, or null."
+      t: "`$ARRAY`"
+    }
+    figures: {
+      h: "Figures"
+      n: "figures"
+      r: true
+      t: "`$ARRAY`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      t: "`$STRING`"
+    }
+    program: {
+      h: "Program"
+      n: "program"
+      r: true
+      sh: "Program slug, e.g."
+      t: "`$STRING`"
+    }
+    published_at: {
+      fo: "date-time"
+      h: "Published At"
+      n: "published_at"
+      r: true
+      t: "`$STRING`"
+    }
+    schedule: {
+      h: "Schedule"
+      n: "schedule"
+      r: false
+      sh: "Mid-year changes, or null."
+      t: "`$ARRAY`"
+    }
+    state: {
+      h: "State"
+      n: "state"
+      r: true
+      sh: "State slug for state-level programs (e.g."
+      t: "`$STRING`"
+    }
+    status: {
+      h: "Status"
+      n: "status"
+      r: true
+      sh: "Observed: `official`."
+      t: "`$STRING`"
+    }
+    verified_at: {
+      fo: "date"
+      h: "Verified At"
+      n: "verified_at"
+      r: true
+      t: "`$STRING`"
+    }
+    year: {
+      h: "Year"
+      n: "year"
+      r: true
+      t: "`$INTEGER`"
+    }
+  }
+
+  name: "year"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /{program}/{state}/{year}.json"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "minimum-wage"
+                k: "param"
+                n: "program"
+                or: "program"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                ex: "florida"
+                k: "param"
+                n: "state"
+                or: "state"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                ex: 2026
+                k: "param"
+                n: "year"
+                or: "year"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/{program}/{state}/{year}.json"
+          q: {
+            exist: [
+              "program"
+              "state"
+              "year"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              var: "program"
+            }
+            {
+              var: "state"
+            }
+            {
+              lit: "{year}.json"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /{program}/{year}.json"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "hsa-contribution-limit"
+                k: "param"
+                n: "program"
+                or: "program"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                ex: 2026
+                k: "param"
+                n: "year"
+                or: "year"
+                r: true
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/{program}/{year}.json"
+          q: {
+            exist: [
+              "program"
+              "year"
+            ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              var: "program"
+            }
+            {
+              lit: "{year}.json"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

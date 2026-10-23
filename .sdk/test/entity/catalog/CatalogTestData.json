@@ -1,0 +1,61 @@
+{
+  "existing": {
+    "catalog": {
+      "CATALOG00": {
+        "agency": "s5a",
+        "api_url": "s5b",
+        "category": "s5c",
+        "dimension": "s5d",
+        "name": "s5e",
+        "page_url": "s5f",
+        "program": "s60",
+        "states": [],
+        "years": []
+      },
+      "CATALOG01": {
+        "agency": "sb4",
+        "api_url": "sb5",
+        "category": "sb6",
+        "dimension": "sb7",
+        "name": "sb8",
+        "page_url": "sb9",
+        "program": "sba",
+        "states": [],
+        "years": []
+      },
+      "CATALOG02": {
+        "agency": "s10e",
+        "api_url": "s10f",
+        "category": "s110",
+        "dimension": "s111",
+        "name": "s112",
+        "page_url": "s113",
+        "program": "s114",
+        "states": [],
+        "years": []
+      }
+    }
+  },
+  "new": {
+    "catalog": {
+      "catalog_ref01": {
+        "agency": "s168",
+        "api_url": "s169",
+        "category": "s16a",
+        "dimension": "s16b",
+        "name": "s16c",
+        "page_url": "s16d",
+        "program": "s16e",
+        "states": [],
+        "years": []
+      }
+    }
+  },
+  "requests": {
+    "GET /index.json": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

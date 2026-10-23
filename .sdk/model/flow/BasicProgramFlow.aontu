@@ -1,0 +1,26 @@
+# BasicProgramFlow
+
+main: kit: flow: BasicProgramFlow:
+{
+  entity: "program",
+  kind: "basic",
+  name: "BasicProgramFlow",
+  step: [
+    {
+      m: {
+        program: "program01"
+      }
+
+      o: "list",
+      v: [
+        {
+          apply: "ItemExists",
+          def: {
+            ref: "program_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicProgramFlow"
+}

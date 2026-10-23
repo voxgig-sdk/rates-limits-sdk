@@ -1,0 +1,27 @@
+{
+  "files": [
+    "SUMMARY.md"
+  ],
+  "config": ".sdk/doc/qa/vale.ini",
+  "routes": {},
+  "quoted": {
+    "SUMMARY.md": [
+      "Current records",
+      "Estimate block (formula and inputs) for derived figures. Always null in every response probed on 2026-10-23, so its shape is unverified.",
+      "Explanatory notes, or null.",
+      "Mid-year changes, or null.",
+      "Observed: `effective`, `as-of`.",
+      "Program slug, for example `hsa-contribution-limit`.",
+      "Program slug, the `&#123;program&#125;` path parameter.",
+      "Rates and Limits production server",
+      "State slugs published (empty for year programs).",
+      "Static JSON API of US federal and state limits, tax brackets and wage rates from ratesandlimits.com; every figure carries the quoted source sentence, its offset in a stored snapshot, the snapshot&#39;s SHA-256 and the date it was verified. Knowledge comes from the documentation at https://ratesandlimits.com/api (which lists the five routes) and from live GET probes of every route on 2026-10-23 (55 programs; for example `hsa-contribution-limit`, and the state-level `minimum-wage`). Unverified: the shape of a record&#39;s `estimate` block (null in every probed record) and of `derived` figures (none observed). State-level programs (`minimum-wage`, `tipped-minimum-wage`) are only reachable through the state route. Responses can be large (`latest.json` ~2.3 MB, `minimum-wage.json` ~3 MB). No key and no rate limit.",
+      "The catalog",
+      "The program",
+      "The record",
+      "Years published (empty for state-year programs).",
+      "`year` for federal programs, `state-year` for state-level ones.",
+      "for example `Attribution required`."
+    ]
+  }
+}

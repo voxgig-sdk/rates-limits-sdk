@@ -1,0 +1,22 @@
+# BasicCatalogFlow
+
+main: kit: flow: BasicCatalogFlow:
+{
+  entity: "catalog",
+  kind: "basic",
+  name: "BasicCatalogFlow",
+  step: [
+    {
+      o: "list",
+      v: [
+        {
+          apply: "ItemExists",
+          def: {
+            ref: "catalog_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicCatalogFlow"
+}

@@ -1,0 +1,6 @@
+# Entity Models
+
+@"./catalog.aontu"
+@"./latest.aontu"
+@"./program.aontu"
+@"./year.aontu"

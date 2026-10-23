@@ -1,0 +1,25 @@
+# API Information
+
+
+main: {
+  kit: {
+    info: {
+      auth: false
+      contact: {
+        url: "https://ratesandlimits.com/api"
+      }
+      description: "Static JSON API of US federal and state limits, tax brackets and wage rates from ratesandlimits.com; every figure carries the quoted source sentence, its offset in a stored snapshot, the snapshot's SHA-256 and the date it was verified. Knowledge comes from the documentation at https://ratesandlimits.com/api (which lists the five routes) and from live GET probes of every route on 2026-10-23 (55 programs; e.g. `hsa-contribution-limit`, and the state-level `minimum-wage`). Unverified: the shape of a record's `estimate` block (null in every probed record) and of `derived` figures (none observed). State-level programs (`minimum-wage`, `tipped-minimum-wage`) are only reachable through the state route. Responses can be large (`latest.json` ~2.3 MB, `minimum-wage.json` ~3 MB). No key and no rate limit."
+      servers: [
+        {
+          description: "Rates and Limits production server"
+          url: "https://ratesandlimits.com/api/v1"
+        }
+      ]
+      summary: "Static JSON API of US federal and state limits, tax brackets and wage rates from ratesandlimits.com; every figure carries the quoted source sentence, its offset in a stored snapshot, the snapshot's SHA-256 and the date it was verified."
+      title: "Rates and Limits API"
+      version: "1.0.0"
+      website: "https://ratesandlimits.com"
+    }
+  }
+}
+

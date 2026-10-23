@@ -1,0 +1,72 @@
+<?php
+declare(strict_types=1);
+
+// RatesLimits SDK utility registration
+
+require_once __DIR__ . '/../core/UtilityType.php';
+require_once __DIR__ . '/Clean.php';
+require_once __DIR__ . '/Done.php';
+require_once __DIR__ . '/MakeError.php';
+require_once __DIR__ . '/FeatureAdd.php';
+require_once __DIR__ . '/FeatureHook.php';
+require_once __DIR__ . '/FeatureInit.php';
+require_once __DIR__ . '/Fetcher.php';
+require_once __DIR__ . '/MakeFetchDef.php';
+require_once __DIR__ . '/MakeContext.php';
+require_once __DIR__ . '/MakeOptions.php';
+require_once __DIR__ . '/MakeRequest.php';
+require_once __DIR__ . '/MakeResponse.php';
+require_once __DIR__ . '/MakeResult.php';
+require_once __DIR__ . '/MakePoint.php';
+require_once __DIR__ . '/MakeSpec.php';
+require_once __DIR__ . '/MakeUrl.php';
+require_once __DIR__ . '/Param.php';
+require_once __DIR__ . '/PrepareAuth.php';
+require_once __DIR__ . '/PrepareBody.php';
+require_once __DIR__ . '/Graphql.php';
+require_once __DIR__ . '/PrepareHeaders.php';
+require_once __DIR__ . '/PrepareMethod.php';
+require_once __DIR__ . '/PrepareParams.php';
+require_once __DIR__ . '/PreparePath.php';
+require_once __DIR__ . '/PrepareQuery.php';
+require_once __DIR__ . '/ResultBasic.php';
+require_once __DIR__ . '/ResultBody.php';
+require_once __DIR__ . '/ResultHeaders.php';
+require_once __DIR__ . '/TransformRequest.php';
+require_once __DIR__ . '/TransformResponse.php';
+
+RatesLimitsUtility::setRegistrar(function (RatesLimitsUtility $u): void {
+    $u->clean = [RatesLimitsClean::class, 'call'];
+    $u->clean_add = [RatesLimitsClean::class, 'add'];
+    $u->clean_explain = [RatesLimitsDone::class, 'clean_explain'];
+    $u->done = [RatesLimitsDone::class, 'call'];
+    $u->make_error = [RatesLimitsMakeError::class, 'call'];
+    $u->feature_add = [RatesLimitsFeatureAdd::class, 'call'];
+    $u->feature_hook = [RatesLimitsFeatureHook::class, 'call'];
+    $u->feature_init = [RatesLimitsFeatureInit::class, 'call'];
+    $u->fetcher = [RatesLimitsFetcher::class, 'call'];
+    $u->make_fetch_def = [RatesLimitsMakeFetchDef::class, 'call'];
+    $u->make_context = [RatesLimitsMakeContext::class, 'call'];
+    $u->make_options = [RatesLimitsMakeOptions::class, 'call'];
+    $u->make_request = [RatesLimitsMakeRequest::class, 'call'];
+    $u->make_response = [RatesLimitsMakeResponse::class, 'call'];
+    $u->make_result = [RatesLimitsMakeResult::class, 'call'];
+    $u->make_point = [RatesLimitsMakePoint::class, 'call'];
+    $u->make_spec = [RatesLimitsMakeSpec::class, 'call'];
+    $u->make_url = [RatesLimitsMakeUrl::class, 'call'];
+    $u->param = [RatesLimitsParam::class, 'call'];
+    $u->prepare_auth = [RatesLimitsPrepareAuth::class, 'call'];
+    $u->prepare_body = [RatesLimitsPrepareBody::class, 'call'];
+    $u->prepare_headers = [RatesLimitsPrepareHeaders::class, 'call'];
+    $u->prepare_method = [RatesLimitsPrepareMethod::class, 'call'];
+    $u->prepare_params = [RatesLimitsPrepareParams::class, 'call'];
+    $u->prepare_path = [RatesLimitsPreparePath::class, 'call'];
+    $u->prepare_query = [RatesLimitsPrepareQuery::class, 'call'];
+    $u->graphql_body = [RatesLimitsGraphql::class, 'body'];
+    $u->graphql_errors = [RatesLimitsGraphql::class, 'errors'];
+    $u->result_basic = [RatesLimitsResultBasic::class, 'call'];
+    $u->result_body = [RatesLimitsResultBody::class, 'call'];
+    $u->result_headers = [RatesLimitsResultHeaders::class, 'call'];
+    $u->transform_request = [RatesLimitsTransformRequest::class, 'call'];
+    $u->transform_response = [RatesLimitsTransformResponse::class, 'call'];
+});

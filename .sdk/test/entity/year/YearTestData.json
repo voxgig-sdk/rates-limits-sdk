@@ -1,0 +1,94 @@
+{
+  "existing": {
+    "year": {
+      "YEAR00": {
+        "agency": "sa0",
+        "canonical_url": "sa1",
+        "category": "sa2",
+        "date_basis": "sa3",
+        "effective_date": "sa4",
+        "estimate": {},
+        "explainers": [],
+        "figures": [],
+        "name": "sa8",
+        "program": "sa9",
+        "published_at": "saa",
+        "schedule": [],
+        "state": "sac",
+        "status": "sad",
+        "verified_at": "sae",
+        "year": 175
+      },
+      "YEAR01": {
+        "agency": "s140",
+        "canonical_url": "s141",
+        "category": "s142",
+        "date_basis": "s143",
+        "effective_date": "s144",
+        "estimate": {},
+        "explainers": [],
+        "figures": [],
+        "name": "s148",
+        "program": "s149",
+        "published_at": "s14a",
+        "schedule": [],
+        "state": "s14c",
+        "status": "s14d",
+        "verified_at": "s14e",
+        "year": 335
+      },
+      "YEAR02": {
+        "agency": "s1e0",
+        "canonical_url": "s1e1",
+        "category": "s1e2",
+        "date_basis": "s1e3",
+        "effective_date": "s1e4",
+        "estimate": {},
+        "explainers": [],
+        "figures": [],
+        "name": "s1e8",
+        "program": "s1e9",
+        "published_at": "s1ea",
+        "schedule": [],
+        "state": "s1ec",
+        "status": "s1ed",
+        "verified_at": "s1ee",
+        "year": 495
+      }
+    }
+  },
+  "new": {
+    "year": {
+      "year_ref01": {
+        "agency": "s280",
+        "canonical_url": "s281",
+        "category": "s282",
+        "date_basis": "s283",
+        "effective_date": "s284",
+        "estimate": {},
+        "explainers": [],
+        "figures": [],
+        "name": "s288",
+        "program": "s289",
+        "published_at": "s28a",
+        "schedule": [],
+        "state": "s28c",
+        "status": "s28d",
+        "verified_at": "s28e",
+        "year": 655
+      }
+    }
+  },
+  "requests": {
+    "GET /{program}/{state}/{year}.json": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    },
+    "GET /{program}/{year}.json": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}
